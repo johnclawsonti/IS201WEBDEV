@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Clawson Web App</title>
+
+    <!-- CSS styles here -->
+    <style>
+        body {
+            background-color: #f0f3f6; /* Light blue-gray background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #444444; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #myS-app-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Georgia', serif;
+            color: #334455;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        /* Styles for the app buttons and layout */
+        .myS-options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .myS-option-button, #myS-next-button, #myS-start-button {
+            padding: 12px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s, opacity 0.2s;
+            font-weight: bold;
+        }
+
+        .myS-option-button:hover:not(:disabled) {
+            background-color: #0056b3;
+        }
+
+        /* Visual Feedback Styles  */
+        .myS-option-button.correct {
+            background-color: #28a745; /* Green */
+            border-color: #28a745;
+        }
+        .myS-option-button.wrong {
+            background-color: #dc3545; /* Red */
+            border-color: #dc3545;
+        }
+
+        /* Disabled/Invisible elements */
+        #myS-quiz-area {
+            display: none; /* Hidden until the user clicks Start */
+        }
+        #myS-next-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .myS-score {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #334455;
+        }
+        .myS-back-link {
+            margin-top: 30px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+    <main id="myS-app-container">
+        <h1>Finance Terminology Quiz</h1>
+        <p>Test your knowledge of core financial concepts!</p>
+
+        <div id="myS-score-display" class="myS-score">Score: 0 / 0</div>
+        
+        <div id="myS-quiz-area">
+            <h2 id="myS-question-text"></h2>
+            <div id="myS-options-container" class="myS-options-grid">
+                </div>
+            <button id="myS-next-button" disabled>Next Question →</button>
+        </div>
+
+        <button id="myS-start-button" class="myS-control-button">Start Quiz</button>
+        
+        <p class="myS-back-link"><a href="about.html">← Back to About Me Page</a></p>
+    </main>
+
+    <!-- Java Script will go here -->
+    <script>
+        const myS_questions = [
+            {
+                question: "What does EBITDA stand for?",
+                options: ["Earnings Before Interest, Taxes, Depreciation, and Amortization", "Equity Before Interest, Tax, Dividends, and Assets", "Expenses Before Income Tax and Depreciation Allowances"],
+                answer: "Earnings Before Interest, Taxes, Depreciation, and Amortization"
+            },
+            {
+                question: "What is the primary function of a Balance Sheet?",
+                options: ["To summarize revenues and expenses over a period.", "To show assets, liabilities, and equity at a specific point in time.", "To detail the movement of cash over a period."],
+                answer: "To show assets, liabilities, and equity at a specific point in time."
+            },
+            {
+                question: "In finance, what is 'Working Capital'?",
+                options: ["Total Equity minus Total Liabilities", "Current Assets minus Current Liabilities", "Total Revenue minus Cost of Goods Sold"],
+                answer: "Current Assets minus Current Liabilities"
+            },
+            {
+                question: "Who is the 'father' of modern finance?",
+                options: ["Albert Einstein","Eugene Fama","Adam Smith","Michael Jackson"],
+                answer: "Eugene Fama"
+
+            },
+            {
+                question: "The Ghost Busters make part of what sector",
+                options: ["Corporate Finance","Real Estate","Investment Banking","Risk Management"],
+                answer: "Risk Management"
+
+            },
+            {
+                question: "Aruba, Jamaica, ooh I wanna take you to ______",
+                options: ["Bermuda","Bahama","Come on","Pretty momma"],
+                answer: "Bermuda"
+
+            }
+        ];
+
+        let myS_currentQuestionIndex = 0;
+        let myS_score = 0;
+        let myS_totalAnswered = 0;
+
+        const myS_questionText = document.getElementById('myS-question-text');
+        const myS_optionsContainer = document.getElementById('myS-options-container');
+        const myS_nextButton = document.getElementById('myS-next-button');
+        const myS_startButton = document.getElementById('myS-start-button');
+        const myS_scoreDisplay = document.getElementById('myS-score-display');
+        const myS_quizArea = document.getElementById('myS-quiz-area');
+
+        // --- Helper Functions ---
+
+        function myS_updateScore() {
+            myS_scoreDisplay.textContent = `Score: ${myS_score} / ${myS_totalAnswered}`;
+        }
+
+        function myS_startQuiz() {
+            myS_startButton.style.display = 'none';
+            myS_quizArea.style.display = 'block';
+            myS_currentQuestionIndex = 0;
+            myS_score = 0;
+            myS_totalAnswered = 0;
+            myS_updateScore();
+            myS_loadQuestion();
+        }
+
+        function myS_loadQuestion() {
+            myS_nextButton.disabled = true;
+            myS_optionsContainer.innerHTML = ''; // Clear previous options
+            
+            if (myS_currentQuestionIndex >= myS_questions.length) {
+                myS_endQuiz();
+                return;
+            }
+
+            const q = myS_questions[myS_currentQuestionIndex];
+            myS_questionText.textContent = q.question;
+            
+            // Create buttons for options
+            q.options.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.classList.add('myS-option-button');
+                button.addEventListener('click', () => myS_checkAnswer(button, option, q.answer));
+                myS_optionsContainer.appendChild(button);
+            });
+        }
+
+        function myS_checkAnswer(selectedButton, selectedAnswer, correctAnswer) {
+            // Check if an answer has already been selected for this question
+            if (myS_nextButton.disabled === false) return; 
+
+            myS_totalAnswered++;
+            let isCorrect = selectedAnswer === correctAnswer;
+
+            // Visual feedback
+            document.querySelectorAll('.myS-option-button').forEach(button => {
+                button.disabled = true; // Disable all buttons
+                if (button.textContent === correctAnswer) {
+                    button.classList.add('correct');
+                } else if (button === selectedButton) {
+                    button.classList.add('wrong');
+                }
+            });
+
+            if (isCorrect) {
+                myS_score++;
+            }
+            
+            myS_updateScore();
+            myS_nextButton.disabled = false;
+        }
+
+        function myS_endQuiz() {
+            myS_questionText.textContent = "Quiz Complete!";
+            myS_optionsContainer.innerHTML = `<p>You scored ${myS_score} out of ${myS_questions.length}!</p>`;
+            myS_nextButton.style.display = 'none';
+            myS_startButton.textContent = 'Restart Quiz';
+            myS_startButton.style.display = 'block';
+        }
+
+        
+        myS_startButton.addEventListener('click', myS_startQuiz);
+        myS_nextButton.addEventListener('click', () => {
+            myS_currentQuestionIndex++;
+            myS_loadQuestion();
+        });
+
+        // Hide next button on load
+        myS_nextButton.style.display = 'block'; 
+
+        
+        myS_quizArea.style.display = 'none';
+        myS_updateScore();
+        
+    </script>
+</body>
+</html>
+
+
+
+
+</head>
+<body>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
