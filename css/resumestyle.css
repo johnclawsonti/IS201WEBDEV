@@ -1,0 +1,116 @@
+/* --- RESUME BASE STYLES --- */
+.myresume-container {
+    /* Sets a maximum width for readability, similar to a page */
+    max-width: 850px;
+    margin: 40px auto;
+    padding: 0;
+    /* Use a clean, professional, sans-serif font */
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+    color: #333;
+    font-size: 11pt; /* Standard resume font size */
+}
+
+.mybody{
+    padding: 0 0.5in;
+}
+
+/* --- HEADER SECTION --- */
+.myheader-section {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #333; /* Dark line under the name */
+}
+
+.myheader-section h1 {
+    font-size: 26pt;
+    margin: 0;
+    font-weight: 700;
+}
+
+.mycontact-info {
+    font-size: 11pt;
+    margin: 0;
+}
+
+/* --- SECTION STYLES (EDUCATION, EXPERIENCE, etc.) --- */
+.mysection {
+    margin-bottom: 20px;
+}
+
+.mysection-title {
+    font-size: 14pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-bottom: 1px solid #333; /* Line under the section title */
+    padding-bottom: 2px;
+    margin-bottom: 10px;
+}
+
+/* --- ENTRY STYLES (Individual jobs, education items) --- */
+.myentry {
+    margin-bottom: 15px;
+    page-break-inside: avoid; /* Helpful for printing */
+}
+
+/* Flexbox for placing text on left and dates on right on the same line */
+.myentry-header,
+.myentry-subheader {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 11pt;
+    margin-bottom: 0;
+    line-height: 1.2;
+}
+
+.myentry-header strong {
+    font-size: 11pt;
+    font-weight: 700; /* Bolds the Institution/Company Name */
+}
+
+.myentry-subheader p {
+    font-style: italic;
+    margin: 0;
+}
+
+.mydate-right {
+    white-space: nowrap; /* Keeps location and date on one line */
+}
+
+/* --- BULLET POINT LISTS --- */
+.myentry ul {
+    list-style: none; /* Removes default bullets */
+    padding-left: 10px; /* Small indent for all list items */
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.myentry ul li {
+    padding-left: 10px; /* Space for the custom bullet */
+    position: relative;
+    margin-bottom: 3px;
+}
+
+/* Custom bullet point (using a square for the main points) */
+.myentry ul li::before {
+    content: "■"; /* Unicode for a filled square */
+    color: #000; /* Black color for the bullet */
+    font-size: 8pt;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+/* --- SKILLS AND INTERESTS SECTION SPECIFIC STYLES --- */
+/* Simple paragraphs for skills/interests text */
+.mysection p {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* Ensure bolding is applied to headers within the skills section */
+.mysection p strong {
+    font-weight: 700;
+}

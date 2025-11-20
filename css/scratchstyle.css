@@ -1,0 +1,104 @@
+/* ----------------------------------------------------------------
+ * REQUIRED STYLESHEET ELEMENTS (All prefixed with 'myS')
+ * ---------------------------------------------------------------- */
+
+/* Style 1: Custom Background Color (Requirement: Custom background) */
+body {
+    /* Sets the overall page background */
+    background-color: #f8f9fa;
+}
+
+/* Style 2: Main Content Container (Used for layout/positioning) */
+#myS-content {
+    max-width: 900px;
+    margin: 40px auto; /* Centers the block horizontally */
+    padding: 20px;
+    background-color: #ffffff; /* White content block background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Style 3: Headings (Requirement: Specifies font family) */
+#myS-heading-main, .myS-heading-secondary {
+    font-family: 'Georgia', serif; /* Elegant, readable serif font */
+    color: #334455; /* A dark, professional blue-gray color */
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 5px;
+}
+
+/* Style 4: Paragraph Text and Lists (Requirement: Specifies font color) */
+.myS-text, #myS-key-areas li {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Clean, modern sans-serif */
+    color: #444444; /* Dark gray for high readability */
+    line-height: 1.6;
+}
+
+/* ----------------------------------------------------------------
+ * ADDITIONAL STYLES FOR ELEGANCE AND FUNCTIONALITY
+ * ---------------------------------------------------------------- */
+
+/* Positioning the three required content divs */
+.myS-section {
+    padding: 20px 0;
+    margin-bottom: 30px;
+}
+
+/* Styling the Image */
+#myS-profile-image {
+    width: 200px; 
+    height: auto;
+    border-radius: 8px; 
+    margin: 15px 0;
+    float: right; /* Use float for simple positioning next to text */
+    margin-left: 20px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Clear the float after the image */
+#myS-intro-block::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Styling the Lists */
+#myS-key-areas {
+    padding-left: 25px;
+    font-size: 0.95em;
+}
+
+/* Styling the Tableau and Video embeds for responsive design */
+.myS-tableau-container, .myS-video-container {
+    margin: 20px 0;
+    overflow: hidden;
+    position: relative;
+    padding-bottom: 56.25%; /* Aspect ratio (16:9) */
+    height: 0;
+}
+
+.myS-tableau-container iframe, .myS-video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #cccccc;
+}
+
+/* Styling for the footer and links */
+#myS-footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px dashed #cccccc;
+}
+
+.myS-app-link a {
+    color: #007bff; 
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.myS-app-link a:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
